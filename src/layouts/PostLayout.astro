@@ -1,0 +1,42 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { formatDate } from "@/lib/content";
+
+const { entry, headings, type = "post" } = Astro.props;
+const minutes = entry.data.minutes || Math.max(1, Math.ceil(entry.body.length / 420));
+---
+
+<BaseLayout title={`${entry.data.title} | 纸间旅栈`} description={entry.data.description}>
+  <section class="page-hero article-hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <p class="eyebrow">{type === "note" ? "札" : entry.data.category}</p>
+      <h1>{entry.data.title}</h1>
+      <p>{entry.data.description}</p>
+      <div class="hero-meta">
+        <time datetime={entry.data.date.toISOString()}>{formatDate(entry.data.date)}</time>
+        <span>{minutes} 分钟</span>
+        {entry.data.series && <a href={`/series/${encodeURIComponent(entry.data.series)}/`}>{entry.data.series}</a>}
+      </div>
+    </div>
+  </section>
+
+  <main class="article-shell">
+    <article class="content-board article-content">
+      <slot />
+      <hr />
+      <div class="article-license">
+        <strong>{entry.data.title}</strong>
+        <span>写于纸间旅栈。转载请保留原文链接。</span>
+      </div>
+    </article>
+    {headings?.length > 0 && (
+      <aside class="toc">
+        <strong>目次</strong>
+        {headings.filter((heading) => heading.depth > 1 && heading.depth < 4).map((heading) => (
+          <a class={`depth-${heading.depth}`} href={`#${heading.slug}`}>{heading.text}</a>
+        ))}
+      </aside>
+    )}
+  </main>
+</BaseLayout>

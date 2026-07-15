@@ -1,0 +1,22 @@
+---
+import { formatDate } from "@/lib/content";
+
+const { post, compact = false } = Astro.props;
+const minutes = post.data.minutes || Math.max(1, Math.ceil(post.body.length / 420));
+---
+
+<article class:list={["post-card", { compact }]}>
+  <a class="post-cover" href={`/posts/${post.slug}/`} aria-label={post.data.title}>
+    <img src={post.data.cover || "/images/covers/default.svg"} alt="" loading="lazy" />
+  </a>
+  <div class="post-card-body">
+    <div class="post-kicker">{post.data.category}</div>
+    <h2><a href={`/posts/${post.slug}/`}>{post.data.title}</a></h2>
+    <p>{post.data.description}</p>
+    <div class="meta-row">
+      <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+      <span>{minutes} 分钟</span>
+      {post.data.series && <a href={`/series/${encodeURIComponent(post.data.series)}/`}>{post.data.series}</a>}
+    </div>
+  </div>
+</article>

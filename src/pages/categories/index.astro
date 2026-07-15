@@ -1,0 +1,105 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getPosts, groupByCategory } from "@/lib/content";
+const posts = await getPosts();
+const categories = Object.entries(groupByCategory(posts)).sort((a, b) => b[1].length - a[1].length);
+
+type CategoryNode = {
+  name: string;
+  path: string[];
+  posts: typeof posts;
+  children: Map<string, CategoryNode>;
+};
+
+const splitCategory = (category: string) =>
+  category
+    .split(/[/>｜|]/)
+    .map((part) => part.trim())
+    .filter(Boolean);
+
+const roots = new Map<string, CategoryNode>();
+
+for (const [category, items] of categories) {
+  const parts = splitCategory(category);
+  const pathParts = parts.length ? parts : [category];
+  let level = roots;
+  let current: CategoryNode | undefined;
+  const trail: string[] = [];
+
+  for (const part of pathParts) {
+    trail.push(part);
+    current = level.get(part);
+    if (!current) {
+      const path = [...trail];
+      current = { name: part, path, posts: [], children: new Map() };
+      level.set(part, current);
+    }
+    level = current.children;
+  }
+
+  if (current) current.posts.push(...items);
+}
+
+const countPosts = (node: CategoryNode): number =>
+  node.posts.length + Array.from(node.children.values()).reduce((sum, child) => sum + countPosts(child), 0);
+
+const escapeHtml = (value: string) =>
+  value.replace(/[&<>"']/g, (char) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[char] || char);
+
+const renderNodes = (nodes: CategoryNode[], depth = 0): string =>
+  nodes
+    .sort((a, b) => countPosts(b) - countPosts(a) || a.name.localeCompare(b.name, "zh-CN"))
+    .map((node) => {
+      const children = Array.from(node.children.values());
+      const postsHtml = node.posts
+        .map((post) => `
+          <a class="category-article" href="/posts/${post.slug}/" style="--depth: ${depth + 1}">
+            <span>${escapeHtml(post.data.title)}</span>
+          </a>
+        `)
+        .join("");
+      const childrenHtml = renderNodes(children, depth + 1);
+
+      return `
+        <details class="category-node" style="--depth: ${depth}">
+          <summary>
+            <span class="category-node-title">
+              <span>${escapeHtml(node.name)}</span>
+              <i class="iconfont icon-arrowright" aria-hidden="true"></i>
+            </span>
+            <span class="category-node-count" aria-label="${escapeHtml(node.name)} 分类文章数">
+              <i class="iconfont icon-articles" aria-hidden="true"></i>
+              <span>${countPosts(node)}</span>
+            </span>
+          </summary>
+          <div class="category-children">
+            ${childrenHtml}
+            ${postsHtml}
+          </div>
+        </details>
+      `;
+    })
+    .join("");
+
+const categoryTreeHtml = renderNodes(Array.from(roots.values()));
+---
+
+<BaseLayout title="目 | 纸间旅栈" description="按主题分类浏览文章。">
+  <section class="page-hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <h1>门目索引</h1>
+    </div>
+  </section>
+  <main class="content-shell">
+    <section class="category-board list-board">
+      <div class="category-tree" set:html={categoryTreeHtml} />
+    </section>
+  </main>
+</BaseLayout>

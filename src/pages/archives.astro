@@ -1,0 +1,35 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getPosts, groupByYear } from "@/lib/content";
+const posts = await getPosts();
+const years = Object.entries(groupByYear(posts)).sort((a, b) => Number(b[0]) - Number(a[0]));
+const formatMonthDay = (date: Date) => `${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+---
+
+<BaseLayout title="卷 | 纸间旅栈" description="按时间归档所有文章。">
+  <section class="page-hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <h1>卷册归档</h1>
+    </div>
+  </section>
+  <main class="content-shell">
+    <section class="archive-board list-board">
+      <p class="list-total">{posts.length} posts in total</p>
+      <hr />
+      {years.map(([year, items]) => (
+        <section class="archive-year-group">
+          <h2 class="archive-year">{year}</h2>
+          <div class="archive-list">
+            {items.map((post) => (
+              <a class="archive-item" href={`/posts/${post.slug}/`}>
+                <time datetime={post.data.date.toISOString()}>{formatMonthDay(post.data.date)}</time>
+                <strong>{post.data.title}</strong>
+              </a>
+            ))}
+          </div>
+        </section>
+      ))}
+    </section>
+  </main>
+</BaseLayout>

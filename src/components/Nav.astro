@@ -1,0 +1,35 @@
+---
+const navItems = [
+  { label: "某", href: "/about/", title: "关于我", icon: "icon-user-fill" },
+  { label: "卷", href: "/archives/", title: "文章归档", icon: "icon-archive-fill" },
+  { label: "目", href: "/categories/", title: "分类目录", icon: "icon-category-fill" },
+  { label: "札", href: "/notes/", title: "短笔记", icon: "icon-articles" },
+  { label: "链", href: "/links/", title: "友链资源", icon: "icon-link-fill" }
+];
+---
+
+<header class="site-nav" data-nav>
+  <a class="brand" href="/" aria-label="回到首页">
+    <span class="brand-mark">
+      <img src="/images/logo.png" alt="" />
+    </span>
+    <span>纸间旅栈</span>
+  </a>
+  <button class="nav-toggle" type="button" aria-label="打开导航" data-nav-toggle>
+    <span></span><span></span><span></span>
+  </button>
+  <nav class="nav-links" data-nav-links>
+    {navItems.map((item) => (
+      <a href={item.href} title={item.title}>
+        <i class={`iconfont ${item.icon}`} aria-hidden="true"></i>
+        <span>{item.label}</span>
+      </a>
+    ))}
+    <button type="button" class="nav-icon" aria-label="搜索" data-search-open>
+      <i class="iconfont icon-search" aria-hidden="true"></i>
+    </button>
+    <button type="button" class="nav-icon" aria-label="切换颜色模式" data-theme-toggle>
+      <i class="iconfont icon-dark" aria-hidden="true" data-theme-icon></i>
+    </button>
+  </nav>
+</header>

@@ -1,0 +1,37 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+const links = [
+  {
+    title: "AIHot Daily",
+    intro: "每日 AI 热点与趋势观察",
+    href: "https://aihot.virxact.com/daily",
+    logo: "/images/aihot-logo.png"
+  }
+];
+---
+
+<BaseLayout title="链 | 纸间旅栈" description="友链与常用资源。">
+  <section class="page-hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <h1>同行与资源</h1>
+    </div>
+  </section>
+  <main class="content-shell">
+    <section class="link-board">
+      <div class="link-list">
+        {links.map((link) => (
+          <a class="link-card" href={link.href} target="_blank" rel="noreferrer">
+            <span class="link-logo">
+              <img src={link.logo} alt="" loading="lazy" />
+            </span>
+            <span class="link-copy">
+              <strong>{link.title}</strong>
+              <p>{link.intro}</p>
+            </span>
+          </a>
+        ))}
+      </div>
+    </section>
+  </main>
+</BaseLayout>

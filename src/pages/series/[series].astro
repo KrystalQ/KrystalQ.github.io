@@ -1,0 +1,30 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PostCard from "@/components/PostCard.astro";
+import { getPosts, groupBySeries } from "@/lib/content";
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return Object.keys(groupBySeries(posts)).map((series) => ({
+    params: { series },
+    props: { series, posts: groupBySeries(posts)[series] }
+  }));
+}
+
+const { series, posts } = Astro.props;
+---
+
+<BaseLayout title={`${series} | 纸间旅栈`} description={`${series} 系列文章。`}>
+  <section class="page-hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <h1>{series}</h1>
+      <p>{posts.length} 篇文章串成一条路。</p>
+    </div>
+  </section>
+  <main class="content-shell">
+    <section class="content-board post-list">
+      {posts.map((post) => <PostCard post={post} />)}
+    </section>
+  </main>
+</BaseLayout>

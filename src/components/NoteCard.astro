@@ -1,0 +1,10 @@
+---
+import { formatDate } from "@/lib/content";
+const { note } = Astro.props;
+---
+
+<article class="note-card">
+  <time datetime={note.data.date.toISOString()}>{formatDate(note.data.date)}</time>
+  <h2><a href={`/notes/${note.slug}/`}>{note.data.title}</a></h2>
+  <p>{note.data.description}</p>
+</article>

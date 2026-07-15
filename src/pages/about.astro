@@ -1,0 +1,62 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="某 | 纸间旅栈" description="关于啾啾，纸间旅栈的主人。">
+  <section class="page-hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <h1>啾啾</h1>
+    </div>
+  </section>
+  <main class="content-shell">
+    <section class="profile-board">
+      <div class="profile-intro">
+        <span class="profile-seal">
+          <img src="/images/profile-avatar.png" alt="啾啾的个人头像" />
+        </span>
+        <div>
+          <p class="profile-kicker">Base 南京</p>
+          <h2>互联网产品经理，也在试着把想法做成可运行的小东西。</h2>
+          <p>前数亿级 C 端产品负责人，懂一点点技术。有一家小软件公司，正在 OPC 探索中；这里记录我对产品、AI 与增长的观察，也收纳一些 vibe coding 途中捡到的方法和问题。</p>
+        </div>
+      </div>
+
+      <div class="profile-grid">
+        <section class="profile-card">
+          <span>身份</span>
+          <h3>产品经理 / 小软件公司经营者</h3>
+          <p>长期在互联网产品一线做设计、增长与落地，经历过数亿级 C 端产品的复杂场景。</p>
+        </section>
+        <section class="profile-card">
+          <span>技术</span>
+          <h3>懂一点点技术</h3>
+          <p>不把技术当黑箱，愿意拆流程、看实现、用工具把想法推进到可验证的形态。</p>
+        </section>
+        <section class="profile-card">
+          <span>探索</span>
+          <h3>OPC 探索中</h3>
+          <p>关注个人能力、产品机会与 AI 工具之间新的协作方式，边试边记录。</p>
+        </section>
+      </div>
+
+      <section class="profile-card profile-focus">
+        <span>当前关注</span>
+        <div class="focus-tags">
+          <a href="/categories/AI/">vibe coding</a>
+          <a href="/categories/AI/">AI Agent</a>
+          <a href="/categories/产品分析/">产品设计</a>
+          <a href="/categories/产品分析/">增长分析</a>
+        </div>
+      </section>
+
+      <section class="profile-contact">
+        <div>
+          <span>联系</span>
+          <h2>有问题、想法或合作，可以写信来。</h2>
+        </div>
+        <a href="mailto:krystalmoqi@163.com">krystalmoqi@163.com</a>
+      </section>
+    </section>
+  </main>
+</BaseLayout>

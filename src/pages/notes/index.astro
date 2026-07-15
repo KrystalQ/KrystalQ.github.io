@@ -1,0 +1,21 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import NoteCard from "@/components/NoteCard.astro";
+import { getNotes } from "@/lib/content";
+const notes = await getNotes();
+---
+
+<BaseLayout title="札 | 纸间旅栈" description="短笔记与碎片记录。">
+  <section class="page-hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <h1>路上短札</h1>
+      <p>不够成文的想法、踩坑、片段和回头可能会用上的句子。</p>
+    </div>
+  </section>
+  <main class="content-shell">
+    <section class="content-board mini-list">
+      {notes.map((note) => <NoteCard note={note} />)}
+    </section>
+  </main>
+</BaseLayout>

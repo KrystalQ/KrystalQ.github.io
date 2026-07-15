@@ -1,0 +1,114 @@
+---
+import Nav from "@/components/Nav.astro";
+import SearchModal from "@/components/SearchModal.astro";
+import "@/styles/global.css";
+
+const {
+  title = "纸间旅栈",
+  description = "开在纸页之间的个人知识旅栈。"
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#26443f" />
+    <title>{title}</title>
+    <link rel="stylesheet" href="https://at.alicdn.com/t/font_1749284_hj8rtnfg7um.css" />
+  </head>
+  <body>
+    <Nav />
+    <slot />
+    <footer class="site-footer">
+      <span>纸间旅栈</span>
+      <span>不是一座完成的图书馆，而是一家还在添灯、挂门牌、收拾卷册的旅栈</span>
+    </footer>
+    <a class="top-button" href="#" aria-label="返回顶部" data-top-button>↑</a>
+    <SearchModal />
+    <script define:vars={{ base: import.meta.env.BASE_URL }}>
+      const root = document.documentElement;
+      const savedTheme = localStorage.getItem("paper-inn-theme");
+      root.dataset.theme = savedTheme || "dark";
+      const themeIcon = document.querySelector("[data-theme-icon]");
+      const syncThemeIcon = () => {
+        themeIcon?.classList.toggle("icon-dark", root.dataset.theme === "dark");
+        themeIcon?.classList.toggle("icon-light", root.dataset.theme !== "dark");
+      };
+      syncThemeIcon();
+
+      const nav = document.querySelector("[data-nav]");
+      const topButton = document.querySelector("[data-top-button]");
+      const navLinks = document.querySelector("[data-nav-links]");
+      document.querySelector("[data-nav-toggle]")?.addEventListener("click", () => {
+        navLinks?.classList.toggle("is-open");
+      });
+
+      const onScroll = () => {
+        nav?.classList.toggle("is-scrolled", window.scrollY > 24);
+        topButton?.classList.toggle("is-visible", window.scrollY > 520);
+      };
+      window.addEventListener("scroll", onScroll);
+      onScroll();
+
+      document.querySelector("[data-theme-toggle]")?.addEventListener("click", () => {
+        const next = root.dataset.theme === "dark" ? "light" : "dark";
+        root.dataset.theme = next;
+        localStorage.setItem("paper-inn-theme", next);
+        syncThemeIcon();
+      });
+
+      const modal = document.querySelector("[data-search-modal]");
+      const input = document.querySelector("[data-search-input]");
+      const results = document.querySelector("[data-search-results]");
+      let searchItems = [];
+
+      const openSearch = async () => {
+        modal?.classList.add("is-open");
+        modal?.setAttribute("aria-hidden", "false");
+        if (!searchItems.length) {
+          const response = await fetch(`${base}search.json`);
+          searchItems = await response.json();
+        }
+        renderResults("");
+        setTimeout(() => input?.focus(), 0);
+      };
+
+      const closeSearch = () => {
+        modal?.classList.remove("is-open");
+        modal?.setAttribute("aria-hidden", "true");
+      };
+
+      const renderResults = (query) => {
+        if (!results) return;
+        const normalized = query.trim().toLowerCase();
+        const matches = normalized
+          ? searchItems.filter((item) => `${item.title} ${item.description} ${item.category || ""} ${item.tags.join(" ")}`.toLowerCase().includes(normalized))
+          : searchItems.slice(0, 8);
+        results.innerHTML = matches.map((item) => `
+          <a href="${item.url}">
+            <span>${item.type}</span>
+            <strong>${item.title}</strong>
+            <small>${item.description}</small>
+          </a>
+        `).join("");
+      };
+
+      document.querySelector("[data-search-open]")?.addEventListener("click", openSearch);
+      document.querySelector("[data-search-close]")?.addEventListener("click", closeSearch);
+      modal?.addEventListener("click", (event) => {
+        if (event.target === modal) closeSearch();
+      });
+      input?.addEventListener("input", (event) => renderResults(event.target.value));
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") closeSearch();
+        if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
+          event.preventDefault();
+          openSearch();
+        }
+      });
+    </script>
+  </body>
+</html>

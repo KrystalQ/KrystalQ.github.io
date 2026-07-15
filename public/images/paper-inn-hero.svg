@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2400 1200" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#15201d"/>
+      <stop offset="0.48" stop-color="#405650"/>
+      <stop offset="1" stop-color="#0d1210"/>
+    </linearGradient>
+    <radialGradient id="lantern" cx="48%" cy="47%" r="42%">
+      <stop offset="0" stop-color="#d8a767" stop-opacity=".42"/>
+      <stop offset=".32" stop-color="#d8a767" stop-opacity=".12"/>
+      <stop offset="1" stop-color="#d8a767" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="blur">
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
+    <pattern id="grain" width="120" height="120" patternUnits="userSpaceOnUse">
+      <path d="M0 30 Q40 5 80 30 T160 30" fill="none" stroke="#e8dfcf" stroke-opacity=".035"/>
+      <path d="M0 92 Q55 72 110 96" fill="none" stroke="#e8dfcf" stroke-opacity=".025"/>
+    </pattern>
+  </defs>
+  <rect width="2400" height="1200" fill="url(#sky)"/>
+  <rect width="2400" height="1200" fill="url(#grain)"/>
+  <rect width="2400" height="1200" fill="url(#lantern)"/>
+  <g opacity=".42" filter="url(#blur)">
+    <ellipse cx="410" cy="820" rx="480" ry="150" fill="#dbe1d7"/>
+    <ellipse cx="1740" cy="800" rx="580" ry="190" fill="#dbe1d7"/>
+  </g>
+  <g fill="#111815" opacity=".68">
+    <path d="M0 940 C240 860 380 910 560 840 C760 760 940 855 1120 800 C1350 730 1550 780 1740 730 C1990 665 2170 760 2400 690 L2400 1200 L0 1200 Z"/>
+    <path d="M160 260 h80 v620 h-80zM2120 210 h88 v680 h-88z" opacity=".35"/>
+  </g>
+  <g transform="translate(880 420)">
+    <path d="M40 310 h500 l-60-220 h-380z" fill="#18231f" stroke="#8fa99d" stroke-opacity=".18" stroke-width="6"/>
+    <path d="M10 96 L290 0 L570 96 Z" fill="#101916" stroke="#d8a767" stroke-opacity=".28" stroke-width="5"/>
+    <path d="M160 150 h260 v160 h-260z" fill="#23322d" stroke="#d8a767" stroke-opacity=".18" stroke-width="4"/>
+    <path d="M260 190 h62 v120 h-62z" fill="#111815"/>
+    <circle cx="290" cy="230" r="42" fill="#d8a767" opacity=".8"/>
+    <circle cx="290" cy="230" r="86" fill="#d8a767" opacity=".12"/>
+  </g>
+  <g fill="none" stroke="#d8a767" stroke-width="5" stroke-opacity=".28">
+    <path d="M650 300 C760 220 850 210 960 270"/>
+    <path d="M1470 275 C1600 205 1710 220 1820 305"/>
+  </g>
+  <g fill="#d8a767" opacity=".72">
+    <circle cx="310" cy="930" r="3"/>
+    <circle cx="730" cy="870" r="2"/>
+    <circle cx="1360" cy="890" r="3"/>
+    <circle cx="1930" cy="820" r="2"/>
+    <circle cx="2140" cy="930" r="3"/>
+  </g>
+  <rect width="2400" height="1200" fill="#0b0f0d" opacity=".28"/>
+</svg>
