@@ -377,7 +377,13 @@ img { max-width: 100%; display: block; }
   gap: 24px;
   padding: clamp(24px, 4vw, 36px);
 }
-.profile-contact a {
+.profile-contact-links {
+  flex: none;
+  display: grid;
+  justify-items: end;
+  gap: 8px;
+}
+.profile-contact-links a {
   flex: none;
   color: var(--accent);
   font-family: var(--mono);
@@ -689,6 +695,12 @@ img { max-width: 100%; display: block; }
   padding: 7px;
   object-fit: contain;
 }
+.link-logo-text {
+  color: var(--accent);
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+}
 .link-copy {
   min-width: 0;
 }
@@ -905,7 +917,10 @@ img { max-width: 100%; display: block; }
   .profile-contact {
     display: grid;
   }
-  .profile-contact a {
+  .profile-contact-links {
+    justify-items: start;
+  }
+  .profile-contact-links a {
     word-break: break-all;
   }
   .archive-item { grid-template-columns: 72px 1fr; }

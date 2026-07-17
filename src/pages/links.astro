@@ -6,6 +6,12 @@ const links = [
     intro: "每日 AI 热点与趋势观察",
     href: "https://aihot.virxact.com/daily",
     logo: "/images/aihot-logo.png"
+  },
+  {
+    title: "xzx-wu",
+    intro: "友人的个人站",
+    href: "https://xzx-wu.github.io/index.html",
+    logoText: "友"
   }
 ];
 ---
@@ -23,7 +29,11 @@ const links = [
         {links.map((link) => (
           <a class="link-card" href={link.href} target="_blank" rel="noreferrer">
             <span class="link-logo">
-              <img src={link.logo} alt="" loading="lazy" />
+              {"logo" in link ? (
+                <img src={link.logo} alt="" loading="lazy" />
+              ) : (
+                <span class="link-logo-text">{link.logoText}</span>
+              )}
             </span>
             <span class="link-copy">
               <strong>{link.title}</strong>
